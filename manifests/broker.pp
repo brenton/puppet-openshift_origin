@@ -981,7 +981,7 @@ class openshift_origin::broker {
         require => Package['rubygem-openshift-origin-msg-broker-mcollective'],
       }
     }
-    'basic-auth' : {
+    'htpasswd' : {
       package { ['rubygem-openshift-origin-auth-remote-user']:
         ensure  => present,
         require => Yumrepo[openshift-origin],
