@@ -157,7 +157,7 @@ class openshift_origin (
   $oo_mount                   = $::gear_root_mount,
   $configure_cgroups          = true,
   $configure_pam              = true,
-  $broker_auth_plugin         = 'mongo',
+  $broker_auth_plugin         = 'htpasswd',
   $broker_auth_pub_key        = '',
   $broker_auth_priv_key       = '',
   $broker_auth_key_password   = '',
