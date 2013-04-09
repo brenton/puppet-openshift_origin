@@ -570,6 +570,8 @@ class openshift_origin::node {
     package { [
       'openshift-origin-cartridge-abstract',
       'openshift-origin-cartridge-php',
+      'openshift-origin-cartridge-jbossews',
+      'openshift-origin-cartridge-jbosseap',
     ]:
       ensure  => present,
       require => [
