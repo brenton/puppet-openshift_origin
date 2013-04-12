@@ -577,7 +577,6 @@ class openshift_origin::node {
       'openshift-origin-cartridge-jenkins',
       'openshift-origin-cartridge-jenkins-client',
       'openshift-origin-cartridge-perl',
-      'openshift-origin-cartridge-perl',
       'openshift-origin-cartridge-php',
       'openshift-origin-cartridge-python',
       'openshift-origin-cartridge-ruby',
