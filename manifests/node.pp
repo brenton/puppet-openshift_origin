@@ -569,9 +569,18 @@ class openshift_origin::node {
 
     package { [
       'openshift-origin-cartridge-abstract',
-      'openshift-origin-cartridge-php',
-      'openshift-origin-cartridge-jbossews',
+      'openshift-origin-cartridge-cron',
+      'openshift-origin-cartridge-diy',
+      'openshift-origin-cartridge-haproxy',
       'openshift-origin-cartridge-jbosseap',
+      'openshift-origin-cartridge-jbossews',
+      'openshift-origin-cartridge-jenkins',
+      'openshift-origin-cartridge-jenkins-client',
+      'openshift-origin-cartridge-perl',
+      'openshift-origin-cartridge-perl',
+      'openshift-origin-cartridge-php',
+      'openshift-origin-cartridge-python',
+      'openshift-origin-cartridge-ruby',
     ]:
       ensure  => present,
       require => [
