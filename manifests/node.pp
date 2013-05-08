@@ -576,8 +576,12 @@ class openshift_origin::node {
       'openshift-origin-cartridge-jbossews',
       'openshift-origin-cartridge-jenkins',
       'openshift-origin-cartridge-jenkins-client',
+      'openshift-origin-cartridge-mock',
+      'openshift-origin-cartridge-mock-plugin',
+      'openshift-origin-cartridge-mysql',
       'openshift-origin-cartridge-perl',
       'openshift-origin-cartridge-php',
+      'openshift-origin-cartridge-postgresql',
       'openshift-origin-cartridge-python',
       'openshift-origin-cartridge-ruby',
     ]:
