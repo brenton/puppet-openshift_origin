@@ -246,14 +246,14 @@ class openshift_origin::node {
           "rm *[module='pam_selinux.so']",
 
           "set 03/type session",
-          "set 03/control required",
-          "set 03/module pam_namespace.so",
-          "set 03/argument[1] no_unmount_on_close",
+          "set 03/control optional",
+          "set 03/module pam_cgroup.so",
           "set 03/#comment 'Managed by puppet:openshift_origin'",
 
           "set 04/type session",
-          "set 04/control optional",
-          "set 04/module pam_cgroup.so",
+          "set 04/control required",
+          "set 04/module pam_namespace.so",
+          "set 04/argument[1] no_unmount_on_close",
           "set 04/#comment 'Managed by puppet:openshift_origin'",
         ],
         onlyif => "match *[#comment='Managed by puppet:openshift_origin'] size == 0"
