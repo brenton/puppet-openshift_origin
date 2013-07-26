@@ -568,7 +568,6 @@ class openshift_origin::node {
     }
 
     package { [
-      'openshift-origin-cartridge-abstract',
       'openshift-origin-cartridge-cron',
       'openshift-origin-cartridge-diy',
       'openshift-origin-cartridge-haproxy',
