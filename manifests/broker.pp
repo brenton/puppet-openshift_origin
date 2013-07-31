@@ -1009,6 +1009,19 @@ class openshift_origin::broker {
         notify  => Service["openshift-broker"],
       }
 
+      file { 'Console htpasswd config':
+        path    => '/var/www/openshift/console/httpd/conf.d/openshift-origin-auth-remote-user-basic.conf',
+        content => template('openshift_origin/console/openshift-origin-auth-remote-user-basic.conf.erb'),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => [
+          Package['rubygem-openshift-origin-auth-remote-user'],
+          File['openshift htpasswd'],
+        ],
+        notify  => Service["openshift-broker"],
+      }
+
       file { 'Auth plugin config':
         path    => '/etc/openshift/plugins.d/openshift-origin-auth-remote-user.conf',
         content => template('openshift_origin/broker/plugins/auth/basic/remote-user.conf.plugin.erb'),
