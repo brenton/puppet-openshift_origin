@@ -90,7 +90,15 @@ end
 
 FileUtils.mkdir_p("/etc/openshift")
 if File.exist?("/etc/openshift/.mongo-setup-complete")
-  $log.info "Mongo has already been setup on this machine. Exiting"
+  $log.info "Mongo has already been setup on this machine. Updating user password only."
+  $log.info "......disable mongo auth"
+  find_and_replace("/etc/mongodb.conf", /^auth = .*$/, "auth = false")
+  restart_mongo 
+  run "/usr/bin/mongo localhost/openshift_broker_dev --eval 'db.addUser(\"openshift\", \"<%= scope.lookupvar('::openshift_origin::mongo_auth_password') %>\")'"
+  run "/usr/bin/mongo localhost/admin --eval 'db.addUser(\"openshift\", \"<%= scope.lookupvar('::openshift_origin::mongo_auth_password') %>\")'"
+  $log.info "......re-enable mongo auth"
+  find_and_replace("/etc/mongodb.conf", /^auth = .*$/, "auth = true")
+  restart_mongo
 else
   $log.info "Configuring Mongo DB"
   $log.info "...setup mongo db admin users"
@@ -106,10 +114,10 @@ else
   end
   restart_mongo
   $log.info "......set db admin users"
-  run "/usr/bin/mongo localhost/openshift_broker_dev --eval 'db.addUser(\"openshift\", \"mooo\")'"
-  run "/usr/bin/mongo localhost/admin --eval 'db.addUser(\"openshift\", \"mooo\")'"
+  run "/usr/bin/mongo localhost/openshift_broker_dev --eval 'db.addUser(\"openshift\", \"<%= scope.lookupvar('::openshift_origin::mongo_auth_password') %>\")'"
+  run "/usr/bin/mongo localhost/admin --eval 'db.addUser(\"openshift\", \"<%= scope.lookupvar('::openshift_origin::mongo_auth_password') %>\")'"
   $log.info "......register mongo auth admin user"
-  run "/usr/bin/mongo openshift_broker_dev --username openshift --password mooo --eval 'db.auth_user.update({\"_id\":\"admin\"}, {\"_id\":\"admin\",\"user\":\"admin\",\"password_hash\":\"2a8462d93a13e51387a5e607cbd1139f\"}, true)'"
+  run "/usr/bin/mongo openshift_broker_dev --username openshift --password <%= scope.lookupvar('::openshift_origin::mongo_auth_password') %> --eval 'db.auth_user.update({\"_id\":\"admin\"}, {\"_id\":\"admin\",\"user\":\"admin\",\"password_hash\":\"2a8462d93a13e51387a5e607cbd1139f\"}, true)'"
   stop_mongo
   $log.info "......enable mongo auth"
   find_and_replace("/etc/mongodb.conf", /^auth = .*$/, "auth = true")

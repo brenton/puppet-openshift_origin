@@ -176,9 +176,18 @@ class openshift_origin (
   $named_tsig_priv_key        = '',
   $os_unmanaged_users         = [],
   $update_network_dns_servers = true,
-  $development_mode           = false
+  $development_mode           = false,
+  $console_session_secret     = 'changeme',
+  $broker_session_secret      = 'changeme'
 ) {
   include openshift_origin::params
+  if $console_session_secret == 'changeme' {
+    warning 'The default console_session_secret is being used'
+  }
+
+  if $broker_session_secret == 'changeme' {
+    warning 'The default broker_session_secret is being used'
+  }
 
   $service   = $::operatingsystem ? {
     'Fedora' => '/usr/sbin/service',
