@@ -244,6 +244,12 @@ class openshift_origin (
     default  => '/bin/echo',
   }
 
+  $mcollective_package = $::operatingsystem ? {
+    'Fedora' => 'mcollective',
+    default  => 'ruby193-mcollective',
+  }
+
+
   if $configure_ntp == true {
     include openshift_origin::ntpd
   } else {
@@ -313,7 +319,8 @@ class openshift_origin (
   ensure_resource('package', 'policycoreutils', {
   }
   )
-  ensure_resource('package', 'mcollective', {
+  ensure_resource('package', $mcollective_package, {
+    alias   => mcollective,
     require => Yumrepo['openshift-origin-deps'],
   }
   )

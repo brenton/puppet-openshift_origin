@@ -7,6 +7,9 @@ libdir = /usr/libexec/mcollective
 <%if (scope.lookupvar('::operatingsystem') == "RedHat" or scope.lookupvar('::operatingsystem') == "CentOS")%>
 libdir = /opt/rh/ruby193/root/usr/libexec/mcollective
 <%end%>
+<%if (scope.lookupvar('::operatingsystem') == "RedHat" or scope.lookupvar('::operatingsystem') == "CentOS")%>
+  logfile = /var/log/ruby193-mcollective.log
+<%end%>
 loglevel = debug
 direct_addressing = 1
 

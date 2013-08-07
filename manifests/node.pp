@@ -128,10 +128,25 @@ class openshift_origin::node {
     mode    => '0644',
   }
 
+  case $::operatingsystem {
+    'Fedora' : {
+      $mcollective_client_config = '/etc/mcollective/client.cfg'
+      $mcollective_server_config = '/etc/mcollective/server.cfg'
+      $mcollective_sysconfig     = '/etc/sysconfig/mcollective'
+      $mcollective_servicename   = 'mcollective'
+    }
+    default  : {
+      $mcollective_client_config = '/opt/rh/ruby193/root/etc/mcollective/client.cfg'
+      $mcollective_server_config = '/opt/rh/ruby193/root/etc/mcollective/server.cfg'
+      $mcollective_sysconfig     = '/opt/rh/ruby193/root/etc/sysconfig/mcollective'
+      $mcollective_servicename   = 'ruby193-mcollective'
+    }
+  }
+
   if !defined(File['mcollective client config']) {
     file { 'mcollective client config':
       ensure  => present,
-      path    => '/etc/mcollective/client.cfg',
+      path    => $mcollective_client_config,
       content => template('openshift_origin/mcollective-client.cfg.erb'),
       owner   => 'root',
       group   => 'root',
@@ -143,7 +158,7 @@ class openshift_origin::node {
   if !defined(File['mcollective server config']) {
     file { 'mcollective server config':
       ensure  => present,
-      path    => '/etc/mcollective/server.cfg',
+      path    => $mcollective_server_config,
       content => template('openshift_origin/mcollective-server.cfg.erb'),
       owner   => 'root',
       group   => 'root',
@@ -156,7 +171,7 @@ class openshift_origin::node {
     if !defined(File['mcollective env']) {
       file { 'mcollective env':
         ensure  => present,
-        path    => '/etc/sysconfig/mcollective',
+        path    => $mcollective_sysconfig,
         content => template('openshift_origin/rhel-scl-ruby193-env.erb'),
         owner   => 'root',
         group   => 'root',
@@ -389,6 +404,7 @@ class openshift_origin::node {
     }
 
     service { 'mcollective':
+      name    => $mcollective_service_name,
       require => [Package['mcollective']],
       enable  => true,
     }
